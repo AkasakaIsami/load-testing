@@ -1,6 +1,10 @@
 import encoding from 'k6/encoding';
 import http from 'k6/http';
 
+
+// 管理员登录 加书加副本 改借书时间上限
+
+
 const username = '00000';
 const password = 'keke520';
 
@@ -12,9 +16,12 @@ const options = {
     },
 };
 
-export default function () {
+function adminLogin() {
+    var res = http.get('http://10.176.122.80:33677/api/v1/auth/admins/token?library=HD', options);
+    return res.headers.Authorization;
+}
 
-    var res=http.get('http://10.176.122.80:33677/api/v1/auth/admins/token?library=HD',options);
+export default function () {
 
     var url = 'http://10.176.122.80:33677/api/v1/books';
     var payload = JSON.stringify({
@@ -32,7 +39,7 @@ export default function () {
     var params = {
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `${res.headers.Authorization}`,
+            Authorization: `${adminLogin()}`,
         },
     };
 
@@ -41,10 +48,18 @@ export default function () {
 
     var url2 = 'http://10.176.122.80:33677/api/v1/copies';
     var payload2 = JSON.stringify({
-        bookId: 2,
-        number: 1,
+        bookId: 1,
+        number: 5,
     });
 
     var res2 = http.post(url2, payload2, params);
     console.log(res2.body);
+
+    var url3 = 'http://10.176.122.80:33677/api/v1/admin/configs';
+    var payload3 = '[{"maxBorrowNumber":10,"borrowExpiration":60000,"reserveExpiration":60000,"role":"UNDERGRADUATE"},{"maxBorrowNumber":5,"borrowExpiration":18060000,"reserveExpiration":18060000,"role":"POSTGRADUATE"},{"maxBorrowNumber":1,"borrowExpiration":60000,"reserveExpiration":60000,"role":"TEACHER"}]'
+
+    http.put(url3, payload3, params);
+
+
+
 }
