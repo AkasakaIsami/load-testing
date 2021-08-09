@@ -14,7 +14,7 @@ const userOptions = {
 };
 
 function userLogin() {
-    var res = http.get('http://10.176.122.80:33677/api/v1/auth/users/token', userOptions);
+    var res = http.get('http://10.176.122.80:33007/auth/users/token', userOptions);
     return res.headers.Authorization;
 }
 
@@ -35,11 +35,11 @@ export default function () {
         },
     };
 
-    url = 'http://10.176.122.80:33677/api/v1/comments';
+    url = 'http://10.176.122.80:33003/comments';
     http.post(url, payload, userParams);
 
 
-    url = 'http://10.176.122.80:33677/api/v1/comments/1/replies';
+    url = 'http://10.176.122.80:33003/comments/1/replies';
     http.get(url, userParams);
 
     var payload = JSON.stringify({
@@ -48,7 +48,7 @@ export default function () {
         toId: null,
     });
 
-    url = 'http://10.176.122.80:33677/api/v1/comments/1/replies';
+    url = 'http://10.176.122.80:33003/comments/1/replies';
     http.post(url, payload, userParams);
 
     var payload = JSON.stringify({

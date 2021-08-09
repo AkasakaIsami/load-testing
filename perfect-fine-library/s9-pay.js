@@ -14,19 +14,13 @@ const userOptions = {
 };
 
 function userLogin() {
-    var res = http.get('http://10.176.122.80:33677/api/v1/auth/users/token', userOptions);
+    var res = http.get('http://10.176.122.80:33007/auth/users/token', userOptions);
     return res.headers.Authorization;
 }
 
 export default function () {
 
     var url;
-    var payload = JSON.stringify({
-        bookId: 1,
-        content: "good book.",
-        rate: 4,
-    });
-
 
     var userParams = {
         headers: {
@@ -35,9 +29,9 @@ export default function () {
         },
     };
 
-    url = 'http://10.176.122.80:33677/api/v1/users/my';
+    url = 'http://10.176.122.80:33008/api/v1/users/my';
     http.get(url, userParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/users/pay_fine';
+    url = 'http://10.176.122.80:33008/users/pay_fine';
     http.get(url, userParams);
 }

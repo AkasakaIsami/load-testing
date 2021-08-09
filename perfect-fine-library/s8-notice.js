@@ -14,7 +14,7 @@ const adminOptions = {
 };
 
 function adminLogin() {
-    var res = http.get('http://10.176.122.80:33677/api/v1/auth/admins/token?library=HD', adminOptions);
+    var res = http.get('http://10.176.122.80:33000/auth/admins/token?library=HD', adminOptions);
     return res.headers.Authorization;
 }
 
@@ -28,9 +28,9 @@ export default function () {
         },
     };
 
-    url = 'http://10.176.122.80:33677/api/v1/orders?username=';
+    url = 'http://10.176.122.80:33006/orders?username=';
     http.get(url, adminParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/admin/notify';
+    url = 'http://10.176.122.80:33001/admin/notify';
     http.get(url, adminParams);
 }

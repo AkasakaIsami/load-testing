@@ -17,13 +17,13 @@ const options = {
 };
 
 function adminLogin() {
-    var res = http.get('http://10.176.122.80:33677/api/v1/auth/admins/token?library=HD', options);
+    var res = http.get('http://10.176.122.80:33000/auth/admins/token?library=HD', options);
     return res.headers.Authorization;
 }
 
 export default function () {
 
-    var url = 'http://10.176.122.80:33677/api/v1/books';
+    var url = 'http://10.176.122.80:33002/books';
     var payload = JSON.stringify({
         author: "weasdasdaq",
         brief: "qwe2112",
@@ -46,7 +46,7 @@ export default function () {
     http.post(url, payload, params);
 
 
-    var url2 = 'http://10.176.122.80:33677/api/v1/copies';
+    var url2 = 'http://10.176.122.80:33004/copies';
     var payload2 = JSON.stringify({
         bookId: 1,
         number: 5,
@@ -55,7 +55,7 @@ export default function () {
     var res2 = http.post(url2, payload2, params);
     console.log(res2.body);
 
-    var url3 = 'http://10.176.122.80:33677/api/v1/admin/configs';
+    var url3 = 'http://10.176.122.80:33001/admin/configs';
     var payload3 = '[{"maxBorrowNumber":10,"borrowExpiration":60000,"reserveExpiration":60000,"role":"UNDERGRADUATE"},{"maxBorrowNumber":5,"borrowExpiration":18060000,"reserveExpiration":18060000,"role":"POSTGRADUATE"},{"maxBorrowNumber":1,"borrowExpiration":60000,"reserveExpiration":60000,"role":"TEACHER"}]'
 
     http.put(url3, payload3, params);

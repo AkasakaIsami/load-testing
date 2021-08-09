@@ -37,7 +37,7 @@ export default function () {
         toId: null,
     });
 
-    url = 'http://10.176.122.80:33677/api/v1/comments/1/replies';
+    url = 'http://10.176.122.80:33003/comments/1/replies';
     http.post(url, payload, userParams);
     
 }

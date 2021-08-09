@@ -16,7 +16,7 @@ const userOptions = {
 };
 
 function userLogin() {
-    var res = http.get('http://10.176.122.80:33677/api/v1/auth/users/token', userOptions);
+    var res = http.get('http://10.176.122.80:33007/auth/users/token', userOptions);
     return res.headers.Authorization;
 }
 
@@ -35,7 +35,7 @@ const adminOptions = {
 };
 
 function adminLogin() {
-    var res = http.get('http://10.176.122.80:33677/api/v1/auth/admins/token?library=HD', adminOptions);
+    var res = http.get('http://10.176.122.80:33000/auth/admins/token?library=HD', adminOptions);
     return res.headers.Authorization;
 }
 
@@ -65,32 +65,32 @@ export default function () {
         },
     };
 
-    url = 'http://10.176.122.80:33677/api/v1/orders?operation=Reserve&copyId=1';
+    url = 'http://10.176.122.80:33006/orders?operation=Reserve&copyId=1';
     http.post(url, payload, userParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/orders/1';
+    url = 'http://10.176.122.80:33006/orders/1';
     http.get(url, userParams);
 
-    http.get('http://10.176.122.80:33677/api/v1/copies?username=20212010138&status=Reserved', adminParams)
+    http.get('http://10.176.122.80:33004/copies?username=20212010138&status=Reserved', adminParams)
 
-    url = 'http://10.176.122.80:33677/api/v1/books/1';
+    url = 'http://10.176.122.80:33002/books/1';
     http.get(url, adminParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/orders?operation=Borrow&copyId=1&username=20212010138';
+    url = 'http://10.176.122.80:33006/orders?operation=Borrow&copyId=1&username=20212010138';
     http.post(url, payload, adminParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/orders/2';
+    url = 'http://10.176.122.80:33006/orders/2';
     http.get(url, adminParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/copies?isbn=2121211171212-000';
+    url = 'http://10.176.122.80:33004/copies?isbn=2121211171212-000';
     http.get(url, adminParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/books/1';
+    url = 'http://10.176.122.80:33002/books/1';
     http.get(url, adminParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/orders?operation=Return&copyId=1';
+    url = 'http://10.176.122.80:33006/orders?operation=Return&copyId=1';
     http.post(url, payload, adminParams);
 
-    url = 'http://10.176.122.80:33677/api/v1/orders/3';
+    url = 'http://10.176.122.80:33006/orders/3';
     http.get(url, adminParams);
 }

@@ -9,14 +9,14 @@ export let options = {
 };
 
 export default function () {
-    var url_getBooks = 'http://10.176.122.80:33677/api/v1/books';
-    var url_getBooksWithTitle = 'http://10.176.122.80:33677/api/v1/books?title=wew';
+    var url_getBooks = 'http://10.176.122.80:33002/books';
+    var url_getBooksWithTitle = 'http://10.176.122.80:33002/books?title=wew';
 
     http.get(url_getBooks);
     http.get(url_getBooksWithTitle);
 
-    http.get('http://10.176.122.80:33677/api/v1/books/2');
-    http.get('http://10.176.122.80:33677/api/v1/copies?bookId=2');
-    http.get('http://10.176.122.80:33677/api/v1/comments?bookId=2');
+    http.get('http://10.176.122.80:33002/books/1');
+    http.get('http://10.176.122.80:33004/copies?bookId=1');
+    http.get('http://10.176.122.80:33003/comments?bookId=1');
 
 }
