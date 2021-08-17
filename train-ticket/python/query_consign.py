@@ -27,4 +27,5 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    query_consign(headers=headers)
+    for i in range(5):
+        query_consign(headers=headers)

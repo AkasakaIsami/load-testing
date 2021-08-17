@@ -28,7 +28,7 @@ if __name__ == '__main__':
                    ("Su Zhou", "Shang Hai"),
                    ("Nan Jing", "Shang Hai")]
     type = "quickest"
-    for i in range(200):
+    for i in range(10):
         place_pair = random.choice(place_pairs)
         print(f"search {type} between {place_pair[0]} to {place_pair[1]}")
         try:

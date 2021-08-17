@@ -11,7 +11,8 @@ def query_order_and_pay(headers):
     :return:
     """
     pairs = _query_orders(headers=headers, types=tuple([0, 1]))
-    pairs2 = _query_orders(headers=headers, types=tuple([0, 1]), query_other=True)
+    pairs2 = _query_orders(
+        headers=headers, types=tuple([0, 1]), query_other=True)
 
     if not pairs and not pairs2:
         return
@@ -38,4 +39,5 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    query_order_and_pay(headers=headers)
+    for i in range(3):
+        query_order_and_pay(headers=headers)

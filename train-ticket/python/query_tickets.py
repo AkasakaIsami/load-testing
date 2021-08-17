@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    for i in range(1000):
+    for i in range(10):
         try:
             query_tickets(headers=headers)
             print("*****************************INDEX:" + str(i))
