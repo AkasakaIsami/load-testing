@@ -1,5 +1,5 @@
 from atomic_queries import _login, _query_high_speed_ticket, _query_normal_ticket
-from utils import random_boolean
+from utils import random_boolean, random_form_list
 
 import time
 
@@ -7,7 +7,7 @@ import time
 uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 date = time.strftime("%Y-%m-%d", time.localtime())
 
-base_address = "http://139.196.152.44:31000"
+base_address = "http://10.176.122.1:31777"
 
 
 def query_tickets(headers):
@@ -23,12 +23,18 @@ def query_tickets(headers):
         start = "Shang Hai"
         end = "Su Zhou"
         high_speed_place_pair = (start, end)
-        _query_high_speed_ticket(place_pair=high_speed_place_pair, headers=headers, time=date)
+        trip_ids = _query_high_speed_ticket(place_pair=high_speed_place_pair, headers=headers, time=date)
+        trip_id = random_form_list(trip_ids)
+
+        print(f"normal,{trip_id}")
     else:
         start = "Shang Hai"
         end = "Nan Jing"
         other_place_pair = (start, end)
-        _query_normal_ticket(place_pair=other_place_pair, headers=headers, time=date)
+        trip_ids = _query_normal_ticket(place_pair=other_place_pair, headers=headers, time=date)
+        trip_id = random_form_list(trip_ids)
+
+        print(f"high speed,{trip_id}")
 
   
 

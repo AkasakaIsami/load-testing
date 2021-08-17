@@ -12,8 +12,8 @@ def random_form_list(l: List):
 
 
 def random_str():
-    ''.join(random.choices(string.ascii_letters, k=random.randint(4, 10)))
+    return ''.join(random.choices(string.ascii_letters, k=random.randint(4, 10)))
 
 
 def random_phone():
-    ''.join(random.choices(string.digits, k=random.randint(8, 15)))
+    return ''.join(random.choices(string.digits, k=random.randint(8, 15)))

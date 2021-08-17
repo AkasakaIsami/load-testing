@@ -2,7 +2,7 @@ from atomic_queries import _query_orders, _collect_one_order, _login, _rebook_ti
 from utils import random_form_list
 import time
 
-base_address = "http://10.176.122.1:32677"
+base_address = "http://10.176.122.1:31777"
 
 
 def query_and_rebook(headers):

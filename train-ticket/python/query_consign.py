@@ -1,7 +1,7 @@
 from atomic_queries import _login
 import requests
 
-base_address = "http://139.196.152.44:31000"
+base_address = "http://10.176.122.1:31777"
 uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 
 def query_consign(headers):
