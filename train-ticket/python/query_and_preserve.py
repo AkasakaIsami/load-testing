@@ -1,4 +1,4 @@
-from atomic_queries import _query_high_speed_ticket, _query_normal_ticket, _query_assurances, _query_food, _query_contacts
+from atomic_queries import _login, _query_high_speed_ticket, _query_normal_ticket, _query_assurances, _query_food, _query_contacts
 from utils import random_boolean, random_phone, random_str, random_form_list
 
 import logging
@@ -102,11 +102,14 @@ def query_and_preserve(headers):
 
 
 if __name__ == '__main__':
+    _, token = _login()
+
     headers = {
         "Cookie": "JSESSIONID=823B2652E3F5B64A1C94C924A05D80AF; YsbCaptcha=2E037F4AB09D49FA9EE3BE4E737EAFD2",
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTYyNzE5OTA0NCwiZXhwIjoxNjI3MjAyNjQ0fQ.3IIwwz7AwqHtOFDeXfih25i6_7nQBPL_K7BFxuyFiKQ",
         "Content-Type": "application/json"
     }
+    headers["Authorization"] = "Bearer " + token
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 

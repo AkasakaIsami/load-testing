@@ -13,7 +13,7 @@ Train Ticket Auto Query Python Scripts
 | S4      | order tickets                 | 3         | query_and_preserve.py                                        | 1000                       |
 | S5      | query orders                  | 5         | This operation is included in any other scenrio.             | —                          |
 | S6      | pay                           | 3         | query_order_and_pay.py                                       | 1                          |
-| S7      | update consign info           | 3         | query_and_update_consign.py                                  | TODO:                      |
+| S7      | update consign info           | 3         | query_and_update_consign.py                                  | 1                          |
 | S8      | rebook                        | 1         | query_and_rebook.py                                          | 1                          |
 | S9      | cancel order                  | 1         | query_and_cancel.py                                          | 1                          |
 | S10     | query and update consign info | 5         | query_consign.py                                             | 1                          |
@@ -22,9 +22,5 @@ Train Ticket Auto Query Python Scripts
 
 
 
-### 2 TODO list
 
-
-
-registry.cn-hangzhou.aliyuncs.com/microservicedemos/ts-verification-code-service:all-pass
 

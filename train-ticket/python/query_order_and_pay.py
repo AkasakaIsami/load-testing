@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from atomic_queries import _query_orders, _pay_one_order
+from atomic_queries import _login, _query_orders, _pay_one_order
 from utils import random_form_list
 
 
@@ -29,10 +29,13 @@ def query_order_and_pay(headers):
 
 
 if __name__ == '__main__':
+    _, token = _login()
+
     headers = {
         "Cookie": "JSESSIONID=CAF07ABCB2031807D1C6043730C69F17; YsbCaptcha=ABF26F4AE563405894B1540057F62E7B",
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTYyNjM0NDgyNSwiZXhwIjoxNjI2MzQ4NDI1fQ.4eOMmQDhnq-Hjj1DuiH8duT6rXkP0QfeTnaXwvYGKD4",
         "Content-Type": "application/json"
     }
+    headers["Authorization"] = "Bearer " + token
 
     query_order_and_pay(headers=headers)
