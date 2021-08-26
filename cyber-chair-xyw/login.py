@@ -1,19 +1,31 @@
-
+import random
 import time
 import requests
+import logging
+from configparser import ConfigParser
+from utils import random_str, random_form_list
 
-base_address = "http://127.0.0.1"
+cp = ConfigParser()
+cp.read("config.ini")
 
-article_port = "12803"
-meeting_port = "12301"
-message_port = "12406"
-pcmember_port = "12305"
-review_port = "12306"
-user_port = "12401"
+base_address = cp.get("server", "base_address")
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
+
+article_port = cp.get("server", "article_port")
+meeting_port = cp.get("server", "meeting_port")
+message_port = cp.get("server", "message_port")
+pcmember_port = cp.get("server", "pcmember_port")
+review_port = cp.get("server", "review_port")
+user_port = cp.get("server", "user_port")
 
 date = time.strftime("%Y-%m-%d", time.localtime())
 
-def _login(username="wuxiya", password="Pwuxiya"):
+
+def _login(username="wuxiya", password="123456"):
+    logging.info(f"Log in with user: {username}")
+
     url = f"{base_address}:{user_port}/login"
     headers = {
     }
@@ -27,8 +39,12 @@ def _login(username="wuxiya", password="Pwuxiya"):
     if r.status_code == 200:
         data = r.json().get("responseBody")
         token = data.get("token")
-        print("login success")
+        logging.info(f"Login success: {username}")
         return token
+    else:
+        logging.error(f"login failed. status_code: {r.status_code}")
 
-    print(r.text)
     return None
+
+if __name__ == '__main__':
+    print(base_address)

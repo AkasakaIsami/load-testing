@@ -1,4 +1,4 @@
-from random import random
+import random
 import time
 from login import _login
 from utils import random_form_list
@@ -16,4 +16,4 @@ date = time.strftime("%Y-%m-%d", time.localtime())
 
 if __name__ == '__main__':
     submitters = ["test2", "test3"]
-    submitter_token = _login(random_form_list(submitters), "123456")
+    submitter_token = _login(random.choice(submitters), "123456")
