@@ -181,6 +181,21 @@ def _begin_submission(chair_name, token, meeting_name, headers: dict = {}):
     else:
         logging.error(f"conference {meeting_name} begin submission failed, {r}")
 
+def _begin_reivew(chair_name, token, meeting_name, headers: dict = {}, assignStrategy="TopicRelevant"):
+    logging.info(f"{chair_name} begin the review of meeting {meeting_name}")
+
+    url = f"{base_address}:{review_port}/meeting/beginReview"
+    headers["Authorization"] = "Bearer " + token
+    data = {
+        "meetingName": meeting_name,
+        "assignStrategy": assignStrategy
+    }
+    r = requests.post(url=url, headers=headers, json=data)
+    if r.status_code == 200:
+        logging.info(f"conference {meeting_name} begin reivew success")
+    else:
+        logging.error(f"conference {meeting_name} begin review failed, {r.status_code}, {r.text}")
+
 
 if __name__ == '__main__':
     # admin login
@@ -190,6 +205,7 @@ if __name__ == '__main__':
     # apply a meeting
     meeting = _create_conference("wuxiya", chair_token)
     meeting_name = meeting.get("meeting_name")
+    meeting_name = "nXQAOi"
     
     topics = meeting.get("topics")
 
@@ -202,9 +218,12 @@ if __name__ == '__main__':
 
     # accept the invitations
     for pc_member in pcmembers:
-        _invite_pcmember("wuxiya", chair_token, meeting_name, pc_member)
-        pc_token = _login(pc_member, "123456")
-        _accept_invitation(pc_member, pc_token, meeting_name, topics)
+        pc_name = pc_member["username"]
+        _invite_pcmember("wuxiya", chair_token, meeting_name, pc_name)
+        pc_token = _login(pc_name, "123456")
+        _accept_invitation(pc_name, pc_token, meeting_name, topics)
 
     # begin submission
     _begin_submission("wuxiya", chair_token, meeting_name)
+
+    # _begin_reivew("wuxiya", chair_token, meeting_name)

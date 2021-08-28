@@ -1,3 +1,4 @@
+from os import pardir
 import random
 import time
 import requests
@@ -7,7 +8,7 @@ from configparser import ConfigParser
 from requests.models import Response
 from utils import random_str, random_form_list
 from login import _login
-from create_and_start_conference import _get_all_users
+from create_and_start_conference import _get_all_users, _begin_reivew
 
 cp = ConfigParser()
 cp.read("config.ini")
@@ -82,11 +83,26 @@ def _submit_an_article(user, token, meeting, headers = {}):
     # logging.info(payload)
     r: Response = requests.post(url=url, data=payload, files=file, headers=headers)
     if r.status_code == 200:
-        logging.info(f"{username} submit an article to meeting {meeting['meetingName']} success. Response: {r.text}")
+        logging.info(f"{user['username']} submit an article to meeting {meeting['meetingName']} success. Response: {r.text}")
     else:
         print(r.request)
         logging.error(r)
 
+def _get_meeting_info(username, token, meeting_name, headers = {}):
+    logging.info(f"{username} get meeting info: {meeting_name}")
+    url = f"{base_address}:{meeting_port}/meeting/meetingInfo"
+    headers["Authorization"] = "Bearer " + token
+    params = {
+        "meetingName": meeting_name
+    }
+    r = requests.get(url, params=params, headers=headers)
+    if r.status_code == 200:
+        meeting_info = r.json()['responseBody']['meetingInfo']
+        logging.info(f"get meeting info: {meeting_info}")
+        return meeting_info
+    else:
+        logging.error(f"fail to get meeting info, {r.status_code}, {r.text}")
+    return
 
 
 if __name__ == '__main__':
@@ -97,17 +113,21 @@ if __name__ == '__main__':
 
     meetings = _get_available_meetings(username, token)
 
-    # random choose a meeting to submit an article
+    # random choose a meeting to submit articles
     meeting = random.choice(meetings)
-    logging.info(f"choose meeting {meeting['meetingName']}")
-    
-    # random choose another author
-    all_users = _get_all_users(token)
-    another_author = random.choice(all_users)
-    while (another_author["username"] == username):
-        another_author = random.choice(all_users)
-    # submit an article
-    _submit_an_article(user, token, meeting)
+    meeting_name = meeting['meetingName']
+    logging.info(f"choose meeting {meeting_name}")
+    # get the meeting info
+    meeting_info = _get_meeting_info(username, token, meeting_name)
+
+    # submit articles
+    for i in range(5):
+        _submit_an_article(user, token, meeting)
+
+    chair_name = meeting_info["chairName"]
+    chair_token = _login(chair_name)
+    # begin the review
+    _begin_reivew(chair_name, chair_token, meeting_name)
     
 
 
