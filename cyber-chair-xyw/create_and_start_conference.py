@@ -120,10 +120,11 @@ def _get_all_users(token, headers: dict = {}):
 
     if r.status_code == 200:
         logging.info("Get all users success")
-        data = r.json().get("responseBody").get("users")
-        users = []
-        for i in data:
-            users.append(i.get("username"))
+        users: list = r.json().get("responseBody").get("users")
+        # delete admin
+        for user in users:
+            if user["username"] == "admin":
+                users.remove(user)
 
         return users
     else:
