@@ -38,6 +38,7 @@ if __name__ == '__main__':
     headers["Authorization"] = "Bearer " + token
 
     uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
-
-    query_one_and_cancel(headers=headers,
+    
+    for i in range(100):
+        query_one_and_cancel(headers=headers,
                          uuid=uuid,)

@@ -31,5 +31,6 @@ if __name__ == '__main__':
     }
 
     headers["Authorization"] = "Bearer " + token
-   
-    query_and_enter_station(headers=headers)
+    
+    for i in range(100): 
+        query_and_enter_station(headers=headers)

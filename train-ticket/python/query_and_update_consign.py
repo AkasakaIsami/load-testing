@@ -1,7 +1,7 @@
 import requests
 import time
 
-from atomic_queries import _login, _query_orders_2, _pay_one_order
+from atomic_queries import _login, _query_orders_2
 from utils import random_form_list
 
 base_address = "http://10.176.122.1:31777"
@@ -52,9 +52,16 @@ def query_and_update_consign(headers):
         "weight": "100",
     }
 
-    requests.put(url=url,
+    response = requests.put(url=url,
                  headers=headers,
                  json=payload)
+
+    if response.status_code is not 200 or response.json().get("data") is None:
+        print("fail")
+        return None
+    else :
+        print("success")
+        return None
 
 
 
@@ -68,5 +75,6 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    for i in range(3):
+    for i in range(100):
         query_and_update_consign(headers=headers)
+        print("*****************************INDEX:" + str(i))

@@ -1,3 +1,4 @@
+import datetime
 from atomic_queries import _login, _query_high_speed_ticket, _query_normal_ticket, _query_assurances, _query_food, _query_contacts
 from utils import random_boolean, random_phone, random_str, random_form_list
 
@@ -10,6 +11,7 @@ logger = logging.getLogger("query_and_preserve")
 # The UUID of user fdse_microservice is that
 uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 date = time.strftime("%Y-%m-%d", time.localtime())
+date_next_year= (datetime.datetime.now() + datetime.timedelta(days=365)).strftime("%Y-%m-%d")
 
 base_address = "http://10.176.122.1:31777"
 
@@ -32,13 +34,13 @@ def query_and_preserve(headers):
         start = "Shang Hai"
         end = "Su Zhou"
         high_speed_place_pair = (start, end)
-        trip_ids = _query_high_speed_ticket(place_pair=high_speed_place_pair, headers=headers, time=date)
+        trip_ids = _query_high_speed_ticket(place_pair=high_speed_place_pair, headers=headers, time=date_next_year)
         PRESERVE_URL = f"{base_address}/api/v1/preserveservice/preserve"
     else:
         start = "Shang Hai"
         end = "Nan Jing"
         other_place_pair = (start, end)
-        trip_ids = _query_normal_ticket(place_pair=other_place_pair, headers=headers, time=date)
+        trip_ids = _query_normal_ticket(place_pair=other_place_pair, headers=headers, time=date_next_year)
         PRESERVE_URL = f"{base_address}/api/v1/preserveotherservice/preserveOther"
 
     _ = _query_assurances(headers=headers)
@@ -49,7 +51,7 @@ def query_and_preserve(headers):
         "accountId": uuid,
         "assurance": "0",
         "contactsId": "",
-        "date": date,
+        "date": date_next_year,
         "from": start,
         "to": end,
         "tripId": ""
@@ -86,7 +88,7 @@ def query_and_preserve(headers):
             "consigneeName": random_str(),
             "consigneePhone": random_phone(),
             "consigneeWeight": random.randint(1, 10),
-            "handleDate": date
+            "handleDate": date_next_year
         }
         base_preserve_payload.update(consign)
 
@@ -115,7 +117,7 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    for i in range(10):
+    for i in range(500):
         try:
             query_and_preserve(headers=headers)
             print("*****************************INDEX:" + str(i))

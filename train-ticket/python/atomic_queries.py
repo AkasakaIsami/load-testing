@@ -296,7 +296,8 @@ def _pay_one_order(order_id, trip_id, headers: dict = {}):
     url = f"{base_address}/api/v1/inside_pay_service/inside_payment"
     payload = {
         "orderId": order_id,
-        "tripId": trip_id
+        "tripId": trip_id,
+        "userId": uuid
     }
 
     response = requests.post(url=url, headers=headers,
