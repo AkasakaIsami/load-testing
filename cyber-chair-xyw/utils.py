@@ -8,10 +8,9 @@ def random_boolean() -> bool:
 
 
 def random_form_list(l: List, num=1):
-    if num == 1:
-        return random.choice(l)
-    else:
-        return random.sample(l,num)
+    # if num == 1:
+    #     return random.choice(l)
+    return random.sample(l,num)
 
 
 
