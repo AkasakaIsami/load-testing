@@ -21,12 +21,10 @@ def query_and_rebook(headers):
     new_date = time.strftime("%Y-%m-%d", time.localtime())
     new_seat_type = "3"
 
-    for pair in pairs: 
-        #print(pair)
-        _rebook_ticket(old_order_id=pair[0], old_trip_id=pair[1], new_trip_id=new_trip_id, new_date=new_date, new_seat_type=new_seat_type, headers=headers)
-
-
-
+    for pair in pairs:
+        # print(pair)
+        _rebook_ticket(old_order_id=pair[0], old_trip_id=pair[1], new_trip_id=new_trip_id,
+                       new_date=new_date, new_seat_type=new_seat_type, headers=headers)
 
 
 if __name__ == '__main__':
@@ -38,10 +36,11 @@ if __name__ == '__main__':
         "Content-Type": "application/json"
     }
     headers["Authorization"] = "Bearer " + token
-    
+
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    query_and_rebook(headers=headers)
+    for i in range(100):
+        query_and_rebook(headers=headers)
 
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 

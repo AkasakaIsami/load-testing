@@ -14,8 +14,11 @@ def query_consign(headers):
 
     response = requests.get(url=url, headers=headers)
     if response.status_code is not 200 or response.json().get("data") is None:
+        print("fail")
         return None
-
+    else :
+        print("success")
+        return None
 
 if __name__ == '__main__':
     _, token = _login()
@@ -27,5 +30,6 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    for i in range(5):
+    for i in range(100):
         query_consign(headers=headers)
+        print("*****************************INDEX:" + str(i))
