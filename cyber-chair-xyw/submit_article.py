@@ -1,4 +1,3 @@
-from os import pardir
 import random
 import time
 import requests
@@ -8,7 +7,7 @@ from configparser import ConfigParser
 from requests.models import Response
 from utils import random_str, random_form_list
 from login import _login
-from create_and_start_conference import _get_all_users, _begin_reivew
+from create_and_start_conference import _begin_reivew
 
 cp = ConfigParser()
 cp.read("config.ini")
@@ -52,7 +51,7 @@ def _get_available_meetings(username, token, headers = {}):
         logging.info(f"{username} get {len(meetings)} available meetings")
         return meetings
     else:
-        logging.error(r)
+        logging.error(f"{username} get available meetings failed, {r.status_code}, {r.text}")
     
     return None
 
@@ -88,14 +87,13 @@ def _submit_an_article(user, token, meeting, headers = {}):
         print(r.request)
         logging.error(r)
 
-def _get_meeting_info(username, token, meeting_name, headers = {}):
-    logging.info(f"{username} get meeting info: {meeting_name}")
+def _get_meeting_info(meeting_name, headers = {}):
     url = f"{base_address}:{meeting_port}/meeting/meetingInfo"
-    headers["Authorization"] = "Bearer " + token
+    # headers["Authorization"] = "Bearer " + token
     params = {
         "meetingName": meeting_name
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = requests.get(url, params=params)
     if r.status_code == 200:
         meeting_info = r.json()['responseBody']['meetingInfo']
         logging.info(f"get meeting info: {meeting_info}")
@@ -111,18 +109,20 @@ if __name__ == '__main__':
     token = _login(username)
     user = _get_user_by_username(username, token)
 
-    meetings = _get_available_meetings(username, token)
 
     # random choose a meeting to submit articles
-    meeting = random.choice(meetings)
-    meeting_name = meeting['meetingName']
+    # meetings = _get_available_meetings(username, token)
+    # meeting = random.choice(meetings)
+    # meeting_name = meeting['meetingName']
+
+    meeting_name = "owYdFgZs" # or just specify a meeting name here.
+
+    meeting_info = _get_meeting_info(meeting_name)
     logging.info(f"choose meeting {meeting_name}")
-    # get the meeting info
-    meeting_info = _get_meeting_info(username, token, meeting_name)
 
     # submit articles
-    for i in range(5):
-        _submit_an_article(user, token, meeting)
+    for i in range(6):
+        _submit_an_article(user, token, meeting_info)
 
     chair_name = meeting_info["chairName"]
     chair_token = _login(chair_name)

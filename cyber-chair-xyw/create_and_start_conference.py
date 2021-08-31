@@ -110,13 +110,12 @@ def _ratify(username, token, meeting_name, headers: dict = {}):
     if r.status_code == 200:
         logging.info(f"Conference {meeting_name} ratify passed")
     else:
-        logging.error(f"Conference {meeting_name} ratify failed with status_code: {r.status_code}")
+        logging.error(f"Conference {meeting_name} ratify failed with status_code: {r.status_code}, {r.text}")
 
 
-def _get_all_users(token, headers: dict = {}):
+def _get_all_users(without_chair = False):
     url = f"{base_address}:{user_port}/util/users?fullname="
-    headers["Authorization"] = "Bearer " + token
-    r = requests.get(url=url, headers=headers)
+    r = requests.get(url=url)
 
     if r.status_code == 200:
         logging.info("Get all users success")
@@ -125,10 +124,12 @@ def _get_all_users(token, headers: dict = {}):
         for user in users:
             if user["username"] == "admin":
                 users.remove(user)
+            if without_chair and user["username"] == "wuxiya":
+                users.remove(user)
 
         return users
     else:
-        logging.error(f"Get all users failed")
+        logging.error(f"Get all users failed, {r.status_code}, {r.text}")
 
     return None
 
@@ -150,7 +151,7 @@ def _invite_pcmember(chair_name, token, meeting_name, pc_name, headers: dict = {
 
 
 def _accept_invitation(pc_name, token, meeting_name, topics, headers: dict = {}):
-    logging.info(f"{pc_member} start to accept the invitation of meeting {meeting_name}")
+    logging.info(f"{pc_name} start to accept the invitation of meeting {meeting_name}")
     url = f"{base_address}:{pcmember_port}/user/invitationRepo"
     headers["Authorization"] = "Bearer " + token
     data = {
@@ -164,7 +165,7 @@ def _accept_invitation(pc_name, token, meeting_name, topics, headers: dict = {})
     if r.status_code == 200:
         logging.info(f"{pc_name} accept the invitation success")
     else:
-        logging.error(f"{pc_name} accept the invitation failed")
+        logging.error(f"{pc_name} accept the invitation failed, {r.status_code}, {r.text}")
 
 
 def _begin_submission(chair_name, token, meeting_name, headers: dict = {}):
@@ -205,7 +206,6 @@ if __name__ == '__main__':
     # apply a meeting
     meeting = _create_conference("wuxiya", chair_token)
     meeting_name = meeting.get("meeting_name")
-    meeting_name = "nXQAOi"
     
     topics = meeting.get("topics")
 
@@ -213,7 +213,7 @@ if __name__ == '__main__':
     _ratify("admin", admin_token, meeting_name)
 
     # invite three pc members
-    users = _get_all_users(chair_token)
+    users = _get_all_users(without_chair=True)
     pcmembers = random_form_list(users, 3)
 
     # accept the invitations
