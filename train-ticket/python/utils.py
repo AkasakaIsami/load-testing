@@ -1,6 +1,7 @@
 import random
 from typing import List
 import string
+import uuid
 
 
 def random_boolean() -> bool:
@@ -17,3 +18,10 @@ def random_str():
 
 def random_phone():
     return ''.join(random.choices(string.digits, k=random.randint(8, 15)))
+
+
+def random_uuid():
+    return uuid.uuid1()
+
+def random_rate():
+    return random.random()
