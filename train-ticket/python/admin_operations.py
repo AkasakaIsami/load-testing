@@ -224,6 +224,62 @@ def _delete_order(order_id, order_train_num, headers={}):
         logging.error(r)
 
 
+def _add_route(headers={}):
+    url = f"{base_address}/api/v1/adminrouteservice/adminroute"
+
+    payload = {
+        "distanceList": "0,100",
+        "endStation": "nanjing",
+        "startStation": "suzhou",
+        "stationList": "suzhou,nanjing"
+    }
+
+    r = requests.post(url=url, json=payload, headers=headers)
+
+    if r.status_code == 200:
+        logging.info(f"Create Route [suzhou,nanjing] success")
+    else:
+        logging.error(r)
+
+
+def _update_route(headers={}):
+    routes = _get_routes(headers=headers)
+    route_id = ""
+    for route in routes:
+        if route["stations"] == ["suzhou", "nanjing"]:
+            route_id = route["id"]
+
+    url = f"{base_address}/api/v1/adminrouteservice/adminroute"
+    payload = {
+        "distanceList": "0,100",
+        "endStation": "nanjing",
+        "startStation": "suzhou",
+        "stationList": "suzhou,nanjing",
+        "id": route_id
+    }
+
+    r = requests.put(url=url, json=payload, headers=headers)
+
+    if r.status_code == 200:
+        logging.info(
+            f"Update Route [suzhou,nanjing] success, change distanceList from 0,100 to 0,120")
+        return route_id
+    else:
+        logging.error(r)
+
+
+def _delete_route(route_id, headers={}):
+    url = f"{base_address}/api/v1/adminrouteservice/adminroute/{route_id}"
+
+    r = requests.delete(url=url, headers=headers)
+
+    if r.status_code == 200:
+        logging.info(
+            f"Delete Route [suzhou,nanjing] success")
+    else:
+        logging.error(r)
+
+
 def _add_user(headers={}):
     url = f"{base_address}/api/v1/adminuserservice/users"
     username = random_str()
@@ -454,6 +510,84 @@ def _delete_train(id, headers={}):
         logging.error(r)
 
 
+def _add_price(headers={}):
+    route_id = random_str()
+    train_id = random_str()
+
+    url = f"{base_address}/api/v1/adminbasicservice/adminbasic/prices"
+
+    payload = {
+        "basicPriceRate": random_rate(),
+        "firstClassPriceRate": 1,
+        "routeId": route_id,
+        "trainType": train_id
+    }
+
+    r = requests.post(url=url, json=payload, headers=headers)
+
+    if r.status_code == 200:
+        prices = _get_prices(headers=headers)
+        price_id = ""
+        for price in prices:
+            if price["routeId"] == route_id and price["trainType"] == train_id:
+                price_id = price["id"]
+                break
+
+        logging.info(f"Create price {price_id} success")
+
+        return price_id
+    else:
+        logging.error(r)
+
+
+def _update_price(price_id, headers={}):
+
+    url = f"{base_address}/api/v1/adminbasicservice/adminbasic/prices"
+    payload = {
+        "basicPriceRate": random_rate(),
+        "firstClassPriceRate": 1,
+        "id": price_id,
+        "routeId": random_str(),
+        "trainType": random_str()
+    }
+
+    r = requests.put(url=url, json=payload, headers=headers)
+
+    if r.status_code == 200:
+        logging.info(
+            f"Update Price {price_id} success")
+    else:
+        logging.error(r)
+
+# FIXME: frontend fail to send the request body
+
+
+def _delete_price(price_id, headers={}):
+    prices = _get_prices(headers=headers)
+    payload = {}
+
+    for price in prices:
+        if price["id"] == price_id:
+            payload = {
+                "basicPriceRate": price["basicPriceRate"],
+                "firstClassPriceRate": price["firstClassPriceRate"],
+                "id": price_id,
+                "routeId": price["routeId"],
+                "trainType": price["trainType"]
+            }
+            break
+
+    url = f"{base_address}/api/v1/adminbasicservice/adminbasic/prices"
+
+    r = requests.delete(url=url, json=payload, headers=headers)
+
+    if r.status_code == 200:
+        logging.info(
+            f"Delete Price {price_id} success")
+    else:
+        logging.error(r)
+
+
 def _add_config(headers={}):
     url = f"{base_address}/api/v1/adminbasicservice/adminbasic/configs"
 
@@ -501,6 +635,107 @@ def _delete_config(name, headers={}):
     else:
         logging.error(r)
 
+# FIXME: frontend missing some data: endTime, startingStationId, and terminalStationId
+
+
+def _add_travel(headers={}):
+    route_id = random_form_list(_get_routes(headers=headers))["id"]
+
+    url = f"{base_address}/api/v1/admintravelservice/admintravel"
+
+    payload = {
+        "routeId": route_id,
+        "startingTime": time_now,
+        "trainTypeId": "ZhiDa",
+        "tripId": "Z233",
+        "endTime": time_now,
+        "startingStationId": "shanghai",
+        "terminalStationId": "nanjing"
+    }
+
+    r = requests.post(url=url, json=payload, headers=headers)
+
+    if r.status_code == 200:
+        logging.info(f"Create Travel Z233 success")
+    else:
+        logging.error(r)
+
+
+# FIXME: frontend missing some data: endTime, startingStationId, and terminalStationId
+
+def _update_travel(headers={}):
+    route_id = random_form_list(_get_routes(headers=headers))["id"]
+
+    url = f"{base_address}/api/v1/admintravelservice/admintravel"
+    payload = {
+        "routeId": route_id,
+        "startingTime": time_now,
+        "trainTypeId": "ZhiDa",
+        "tripId": "Z233",
+        "endTime": time_now,
+        "startingStationId": "shanghai",
+        "terminalStationId": "beijing"
+    }
+
+    r = requests.put(url=url, json=payload, headers=headers)
+
+    if r.status_code == 200:
+        logging.info(
+            f"Update Travel Z233 success")
+    else:
+        logging.error(r)
+
+
+def _delete_travel(headers={}):
+    url = f"{base_address}/api/v1/admintravelservice/admintravel/Z233"
+
+    r = requests.delete(url=url, headers=headers)
+
+    if r.status_code == 200:
+        logging.info(
+            f"Delete Travel Z233 success")
+    else:
+        logging.error(r)
+
+def _add_update_delete(headers={}):
+    order = _add_order(headers=headers)
+    order_id = order["id"]
+    order_train_num = order["trainNumber"]
+    _update_order(order_id=order_id, headers=headers)
+    _delete_order(order_id=order_id,order_train_num=order_train_num, headers=headers)
+
+    _add_route(headers=headers)
+    route_id = _update_route(headers=headers)
+    _delete_route(route_id=route_id, headers=headers)
+
+    _add_travel(headers=headers)
+    _update_travel(headers=headers)
+    _delete_travel(headers=headers)
+
+    username = _add_user(headers=headers)
+    _update_user(username=username, headers=headers)
+    _delete_user(username=username, headers=headers)
+
+    name = _add_contact(headers=headers)
+    _update_contact(name=name, headers=headers)
+    _delete_contact(name=name, headers=headers)
+
+    _add_station(headers=headers)
+    _update_station(headers=headers)
+    _delete_station(headers=headers)
+
+    train_id = _add_train(headers=headers)
+    _update_train(id=train_id, headers=headers)
+    _delete_train(id=train_id, headers=headers)
+
+    price_id = _add_price(headers=headers)
+    _update_price(price_id=price_id, headers=headers)
+    _delete_price(price_id=price_id, headers=headers)
+
+    config_name = _add_config(headers=headers)
+    _update_config(name=config_name, headers=headers)
+    _delete_config(name=config_name, headers=headers)
+
 
 if __name__ == '__main__':
     _, token = _login("admin", "222222")
@@ -511,39 +746,11 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    for i in range(0):
-        order = _add_order(headers=headers)
-        order_id = order["id"]
-        order_train_num = order["trainNumber"]
-        _update_order(order_id=order_id, headers=headers)
-        _delete_order(order_id=order_id,
-                      order_train_num=order_train_num, headers=headers)
-
-        username = _add_user(headers=headers)
-        _update_user(username=username, headers=headers)
-        _delete_user(username=username, headers=headers)
-
     for i in range(1):
-        name = _add_contact(headers=headers)
-        _update_contact(name=name, headers=headers)
-        _delete_contact(name=name, headers=headers)
+        _add_update_delete(headers=headers)
 
-        _add_station(headers=headers)
-        _update_station(headers=headers)
-        _delete_station(headers=headers)
-
-        train_id = _add_train(headers=headers)
-        _update_train(id=train_id, headers=headers)
-        _delete_train(id=train_id, headers=headers)
-
-        config_name = _add_config(headers=headers)
-        _update_config(name=config_name, headers=headers)
-        _delete_config(name=config_name, headers=headers)
-
-    n = 0
+    n = 5
     logging.info(f"Start query, totally {n} times.")
     for i in range(n):
         _get(headers=headers)
         logging.info(f"Finish query {i+1} / {n}")
-
-    uuid1 = random_uuid()
