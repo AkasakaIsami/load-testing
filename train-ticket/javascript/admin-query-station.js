@@ -10,20 +10,20 @@ import {
 } from 'k6';
 
 export let options = {
-    // vus: 1,
-    // iterations: 5,
-    minIterationDuration: '1s',
-    stages: [
-        { duration: '3s', target: 3 },
-      ],
+    vus: 15,
+    duration: '1s',
+    // minIterationDuration: '1s',
+    // stages: [
+    //     { duration: '3s', target: 3 },
+    //   ],
 };
 
 export function setup() {
     var url = base_addr + '/api/v1/users/login';
 
     var payload = JSON.stringify({
-        password: "111111",
-        username: "fdse_microservice",
+        password: "222222",
+        username: "admin",
         verificationCode: "1234",
     });
 
