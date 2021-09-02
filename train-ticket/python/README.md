@@ -1,7 +1,7 @@
 # train-ticket-auto-query
 Train Ticket Auto Query Python Scripts
 
-Including all the operations in Train Ticket except admin querying route which is to be done using K6.To run the scripts, run the code below in shell:
+Including all the operations in Train Ticket except admin querying route which is to be done using K6. To run the scripts, run the code below in shell:
 
 ```shell
 sh run.sh

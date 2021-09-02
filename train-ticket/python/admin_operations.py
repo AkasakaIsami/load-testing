@@ -688,11 +688,11 @@ def _delete_travel(headers={}):
 
 def _get(headers={}):
     _get_orders(headers=headers)
-    # _get_routes(headers=headers)
+    _get_routes(headers=headers)
     _get_travels(headers=headers)
     _get_users(headers=headers)
     _get_contacts(headers=headers)
-    _get_stations(headers=headers)
+    # _get_stations(headers=headers)
     _get_trains(headers=headers)
     _get_prices(headers=headers)
     _get_configs(headers=headers)
