@@ -134,18 +134,6 @@ def _get_configs(headers={}):
         logging.error(r)
 
 
-def _get(headers={}):
-    _get_orders(headers=headers)
-    _get_routes(headers=headers)
-    _get_travels(headers=headers)
-    _get_users(headers=headers)
-    _get_contacts(headers=headers)
-    _get_stations(headers=headers)
-    _get_trains(headers=headers)
-    _get_prices(headers=headers)
-    _get_configs(headers=headers)
-
-
 def _add_order(headers={}):
     url = f"{base_address}/api/v1/adminorderservice/adminorder"
 
@@ -697,12 +685,26 @@ def _delete_travel(headers={}):
     else:
         logging.error(r)
 
+
+def _get(headers={}):
+    _get_orders(headers=headers)
+    # _get_routes(headers=headers)
+    _get_travels(headers=headers)
+    _get_users(headers=headers)
+    _get_contacts(headers=headers)
+    _get_stations(headers=headers)
+    _get_trains(headers=headers)
+    _get_prices(headers=headers)
+    _get_configs(headers=headers)
+
+
 def _add_update_delete(headers={}):
     order = _add_order(headers=headers)
     order_id = order["id"]
     order_train_num = order["trainNumber"]
     _update_order(order_id=order_id, headers=headers)
-    _delete_order(order_id=order_id,order_train_num=order_train_num, headers=headers)
+    _delete_order(order_id=order_id,
+                  order_train_num=order_train_num, headers=headers)
 
     _add_route(headers=headers)
     route_id = _update_route(headers=headers)
@@ -746,11 +748,13 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    for i in range(1):
+    query_time = 100
+    add_time = 1
+
+    for i in range(add_time):
         _add_update_delete(headers=headers)
 
-    n = 5
-    logging.info(f"Start query, totally {n} times.")
-    for i in range(n):
+    logging.info(f"Start query, totally {query_time} times.")
+    for i in range(query_time):
         _get(headers=headers)
-        logging.info(f"Finish query {i+1} / {n}")
+        logging.info(f"Finish query {i+1} / {query_time}")

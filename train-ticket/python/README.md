@@ -1,11 +1,13 @@
 # train-ticket-auto-query
 Train Ticket Auto Query Python Scripts
 
-To run the scripts, run the code below in shell:
+Including all the operations in Train Ticket except admin querying route which is to be done using K6.To run the scripts, run the code below in shell:
 
 ```shell
 sh run.sh
 ```
+
+FYI, I found some bugs to be fixed when completing the scripts in `admin_operations.py`. For the backend bugs, I already fixed them in my branch and will launch the pull request someday. For the frontend bugs, I recorded them in the file `admin_operations.py`. To find the record, search the "FIXME:" and you will find them.
 
 
 
@@ -25,6 +27,8 @@ sh run.sh
 | S10     | query consign          | 5         | query_consign.py                                             | 1                          |
 | S11     | collect tickets        | 1         | query_and_collect_ticket.py                                  | 1                          |
 | S12     | enter stations         | 1         | query_and_enter_station.py                                   | 1                          |
+| S13     | admin write operations | 1         | admin_operations.py                                          | 1                          |
+| S14     | admin query operations | 100       | Including all the admin query operations except querying route which is to be done using K6.<br />admin_operations.py | 100                        |
 
 
 

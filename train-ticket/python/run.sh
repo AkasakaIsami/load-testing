@@ -17,3 +17,5 @@ python3 query_and_update_consign.py
 python3 query_and_collect_ticket.py
 
 python3 query_and_enter_station.py
+
+python3 admin_operations.py
