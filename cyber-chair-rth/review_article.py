@@ -26,12 +26,13 @@ notice_port = cp.get("server", "notice_port")
 
 date = time.strftime("%Y-%m-%d", time.localtime())
 
-def _get_pcmember_meetings(username):
-    url = f"{base_address}:{pcmember_port}/user/pcMemberMeeting"
+def _get_pcmember_meetings(username, token, headers = {}):
+    url = f"{base_address}:{user_auth_port}/user/pcMemberMeeting"
+    headers["Authorization"] = "Bearer " + token
     params = {
         "username": username
     }
-    r = requests.get(url, params=params)
+    r = requests.get(url, params=params, headers=headers)
     if r.status_code == 200:
         meetings = r.json()["responseBody"]["meetings"]
         logging.info(f"get {len(meetings)} {username}'s meetings as pc member.")
@@ -39,13 +40,14 @@ def _get_pcmember_meetings(username):
     else:
         logging.error(f"fail to get {username}'s meetings as pc member, {r.status_code}, {r.text}")
 
-def _get_review_articles(username, meeting_name):
-    url = f"{base_address}:{review_port}/meeting/reviewArticles"
+def _get_review_articles(username, token, meeting_name, headers = {}):
+    url = f"{base_address}:{pcmember_port}/meeting/reviewArticles"
+    headers["Authorization"] = "Bearer " + token
     params = {
         "pcMemberName": username,
         "meetingName": meeting_name
     }
-    r = requests.get(url, params=params)
+    r = requests.get(url, params=params, headers=headers)
     if r.status_code == 200:
         review_articles = r.json()["responseBody"]["reviewArticles"]
         logging.info(f"pc name: {username}, meeting name: {meeting_name}, get {len(review_articles)} review articles")
@@ -53,8 +55,9 @@ def _get_review_articles(username, meeting_name):
     else:
         logging.error(f"{username} fail to get review articles, meeting: {meeting_name}, {r.status_code}, {r.text}")
 
-def _review_article(username, articleId, score, confidence, reviews):
-    url = f"{base_address}:{review_port}/meeting/reviewer"
+def _review_article(username, token, articleId, score, confidence, reviews, headers = {}):
+    url = f"{base_address}:{pcmember_port}/meeting/reviewer"
+    headers["Authorization"] = "Bearer " + token
     payload = {
         "pcMemberName": username,
         "articleid": articleId,
@@ -62,14 +65,15 @@ def _review_article(username, articleId, score, confidence, reviews):
         "confidence": confidence,
         "reviews": reviews
     }
-    r = requests.post(url=url, json=payload)
+    r = requests.post(url=url, json=payload, headers=headers)
     if r.status_code == 200:
         logging.info(f"{username} review {articleId} success. score: {score}, confidence: {confidence}, reviews: {reviews}, {r.text}")
     else:
         logging.error(f"{username} review {articleId} fail, {r.status_code}, {r.text}")
 
-def _update_review(username, articleId, score, confidence, reviews, status):
-    url = f"{base_address}:{review_port}/meeting/updateReview"
+def _update_review(username, token, articleId, score, confidence, reviews, status, headers = {}):
+    url = f"{base_address}:{pcmember_port}/meeting/updateReview"
+    headers["Authorization"] = "Bearer " + token
     payload = {
         "pcMemberName": username,
         "articleId": articleId,
@@ -78,29 +82,31 @@ def _update_review(username, articleId, score, confidence, reviews, status):
         "reviews": reviews,
         "status": status
     }
-    r = requests.post(url=url, json=payload)
+    r = requests.post(url=url, json=payload, headers=headers)
     if r.status_code == 200:
         logging.info(f"{username} update review {articleId} success. score: {score}, confidence: {confidence}, reviews: {reviews}, {r.text}")
     else:
         logging.error(f"{username} review {articleId} fail, {r.status_code}, {r.text}")
 
-def _confirm_review(username, articleId, status):
-    url = f"{base_address}:{review_port}/meeting/reviewConfirm"
+def _confirm_review(username, token, articleId, status, headers = {}):
+    url = f"{base_address}:{pcmember_port}/meeting/reviewConfirm"
+    headers["Authorization"] = "Bearer " + token
     payload = {
         "pcMemberName": username,
         "articleId": articleId,
         "status": status
     }
-    r = requests.post(url=url, json=payload)
+    r = requests.post(url=url, json=payload, headers=headers)
     if r.status_code == 200:
         logging.info(f"{username} confirm review {articleId} success. {r.text}")
     else:
         logging.error(f"{username} review {articleId} fail, {r.status_code}, {r.text}")
 
-def _get_chair_meetings(username):
-    url = f"{base_address}:{meeting_port}/user/chairMeeting"
+def _get_chair_meetings(username, token, headers = {}):
+    url = f"{base_address}:{user_auth_port}/user/chairMeeting"
+    headers["Authorization"] = "Bearer " + token
     params = {"username": username}
-    r = requests.get(url=url, params=params)
+    r = requests.get(url=url, params=params, headers=headers)
     if r.status_code == 200:
         meetings = r.json()["responseBody"]["meetings"]
         print(meetings)
@@ -111,52 +117,56 @@ def _get_chair_meetings(username):
     
     return None
 
-def _publish_meeting(meeting_name):
-    url = f"{base_address}:{meeting_port}/meeting/publish"
+def _publish_meeting(meeting_name, token, headers = {}):
+    url = f"{base_address}:{admin_meeting_port}/meeting/publish"
+    headers["Authorization"] = "Bearer " + token
     payload = {
         "meetingName": meeting_name
     }
-    r = requests.post(url, json=payload)
+    r = requests.post(url, json=payload, headers=headers)
     if r.status_code == 200:
         logging.info(f"publish meeting {meeting_name} success, {r.text}")
     else:
         logging.error(f"publish meeting {meeting_name} fail, {r.status_code}, {r.text}")
 
 if __name__ == '__main__':
+    # admin login
+    admin_token = _login("admin", "Erangel")
+
     # review all articles
-    users = _get_all_users()
+    users = _get_all_users("admin", admin_token)
     for user in users:
         username = user["username"]
-        meetings = _get_pcmember_meetings(username)
+        meetings = _get_pcmember_meetings(username, admin_token)
         for meeting in meetings:
             meeting_name = meeting["meetingName"]
-            review_articles = _get_review_articles(username, meeting_name)
+            review_articles = _get_review_articles(username, admin_token, meeting_name)
             for article in review_articles:
                 if article["reviewStatus"] == 'unReviewed':
-                    _review_article(username, article["articleId"], -1, "high", "it's not good. I'd like to give a weak reject.")
+                    _review_article(username, admin_token, article["articleId"], -1, "high", "it's not good. I'd like to give a weak reject.")
     
     # chair end review and begin discussion
-    chair_name = "wuxiya"
-    chair_meetings = _get_chair_meetings(chair_name)
+    chair_name = "test123"
+    chair_meetings = _get_chair_meetings(chair_name, admin_token)
     for chair_meeting in chair_meetings:
         meeting_name = chair_meeting["meetingName"]
-        meeting_info = _get_meeting_info(meeting_name)
+        meeting_info = _get_meeting_info(meeting_name, admin_token)
         if meeting_info["status"] == 'ReviewCompleted':
-            _publish_meeting(meeting_name)
+            _publish_meeting(meeting_name, admin_token)
 
     # re-review all articles
     for user in users:
         username = user["username"]
-        meetings = _get_pcmember_meetings(username)
+        meetings = _get_pcmember_meetings(username, admin_token)
         for meeting in meetings:
             meeting_name = meeting["meetingName"]
-            meeting_info = _get_meeting_info(meeting_name)
+            meeting_info = _get_meeting_info(meeting_name, admin_token)
             if meeting_info["status"] == 'ResultPublished':
-                review_articles = _get_review_articles(username, meeting_name)
+                review_articles = _get_review_articles(username, admin_token, meeting_name)
                 for article in review_articles:
                     if article["reviewStatus"] == 'alreadyReviewed':
-                        _update_review(username, article["articleId"], 1, "high", "it's ok now.", "beforeRebuttal")
-                        _confirm_review(username, article["articleId"], "beforeRebuttal")
+                        _update_review(username, admin_token, article["articleId"], 1, "high", "it's ok now.", "beforeRebuttal")
+                        _confirm_review(username, admin_token, article["articleId"], "beforeRebuttal")
 
 
         

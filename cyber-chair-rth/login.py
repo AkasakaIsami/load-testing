@@ -40,7 +40,7 @@ def _login(username="test123", password="12345qwert"):
         logging.info(f"Login success: {username}. token: {token}")
         return token
     else:
-        logging.error(f"Login failed. status_code: {r.status_code}")
+        logging.error(f"Login failed. status_code: {r.status_code}, {r.text}")
         exit()
 
 

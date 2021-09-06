@@ -124,7 +124,7 @@ if __name__ == '__main__':
     # meeting = random.choice(meetings)
     # meeting_name = meeting['meetingName']
 
-    meeting_name = "tdzNBhQQHj" # or just specify a meeting name here.
+    meeting_name = "CvjNui" # or just specify a meeting name here.
 
     meeting_info = _get_meeting_info(meeting_name, token)
     # logging.info(f"choose meeting {meeting_name}")
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     chair_name = meeting_info["chairName"]
     chair_token = _login(chair_name)
     # begin the review
-    # _begin_reivew(chair_name, chair_token, meeting_name)
+    _begin_reivew(chair_name, chair_token, meeting_name)
     
 
 
