@@ -39,6 +39,7 @@ if __name__ == '__main__':
 
     uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
     
-    for i in range(100):
+    for i in range(10):
+    # for i in range(1):
         query_one_and_cancel(headers=headers,
                          uuid=uuid,)

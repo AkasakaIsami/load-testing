@@ -1,8 +1,11 @@
 from atomic_queries import _query_orders, _collect_one_order, _login, _rebook_ticket
 from utils import random_form_list
 import time
+from configparser import ConfigParser
 
-base_address = "http://10.176.122.1:31777"
+cp = ConfigParser()
+cp.read("config.ini")
+base_address = cp.get("server", "base_address")
 
 
 def query_and_rebook(headers):
@@ -39,7 +42,8 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    for i in range(100):
+    for i in range(10):
+    # for i in range(1):
         query_and_rebook(headers=headers)
 
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())

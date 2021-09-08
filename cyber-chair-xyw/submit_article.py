@@ -5,7 +5,7 @@ import logging
 from configparser import ConfigParser
 
 from requests.models import Response
-from utils import random_str, random_form_list
+from utils import random_str
 from login import _login
 from create_and_start_conference import _begin_reivew
 
@@ -111,24 +111,20 @@ if __name__ == '__main__':
 
 
     # random choose a meeting to submit articles
-    # meetings = _get_available_meetings(username, token)
-    # meeting = random.choice(meetings)
-    # meeting_name = meeting['meetingName']
+    meetings = _get_available_meetings(username, token)
+    meeting = random.choice(meetings)
+    meeting_name = meeting['meetingName']
 
-    meeting_name = "owYdFgZs" # or just specify a meeting name here.
+    # meeting_name = "kqaFbF" # or just specify a meeting name here.
 
     meeting_info = _get_meeting_info(meeting_name)
     logging.info(f"choose meeting {meeting_name}")
 
     # submit articles
-    for i in range(6):
+    for i in range(10):
         _submit_an_article(user, token, meeting_info)
 
     chair_name = meeting_info["chairName"]
     chair_token = _login(chair_name)
     # begin the review
     _begin_reivew(chair_name, chair_token, meeting_name)
-    
-
-
-    

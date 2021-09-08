@@ -2,12 +2,16 @@ from atomic_queries import _login, _query_high_speed_ticket, _query_normal_ticke
 from utils import random_boolean, random_form_list
 
 import time
+from configparser import ConfigParser
+
+cp = ConfigParser()
+cp.read("config.ini")
+base_address = cp.get("server", "base_address")
 
 # The UUID of user fdse_microservice is that
 uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 date = time.strftime("%Y-%m-%d", time.localtime())
 
-base_address = "http://10.176.122.1:31777"
 
 
 def query_tickets(headers):
@@ -52,7 +56,8 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    for i in range(1000):
+    for i in range(100):
+    # for i in range(1):
         try:
             query_tickets(headers=headers)
             print("*****************************INDEX:" + str(i))

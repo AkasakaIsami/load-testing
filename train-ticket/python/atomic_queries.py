@@ -3,9 +3,13 @@ import requests
 from pprint import pprint
 import logging
 import time
+from configparser import ConfigParser
+
+cp = ConfigParser()
+cp.read("config.ini")
+base_address = cp.get("server", "base_address")
 
 logger = logging.getLogger("atomic_queries")
-base_address = "http://10.176.122.1:31777"
 
 headers = {
     "Cookie": "JSESSIONID=CAF07ABCB2031807D1C6043730C69F17; YsbCaptcha=ABF26F4AE563405894B1540057F62E7B",

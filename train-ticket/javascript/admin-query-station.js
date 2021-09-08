@@ -10,13 +10,11 @@ import {
 } from 'k6';
 
 export let options = {
-    vus: 15,
-    duration: '1s',
-    // minIterationDuration: '1s',
-    // stages: [
-    //     { duration: '3s', target: 3 },
-    //   ],
+    vus: 1,
+    iterations: 100,
+    minIterationDuration: '1s',
 };
+
 
 export function setup() {
     var url = base_addr + '/api/v1/users/login';

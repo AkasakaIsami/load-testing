@@ -1,7 +1,12 @@
 from atomic_queries import _login
 import requests
+from configparser import ConfigParser
 
-base_address = "http://10.176.122.1:31777"
+cp = ConfigParser()
+cp.read("config.ini")
+base_address = cp.get("server", "base_address")
+
+
 uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 
 def query_consign(headers):
@@ -30,6 +35,7 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    for i in range(100):
+    for i in range(10):
+    # for i in range(1):
         query_consign(headers=headers)
         print("*****************************INDEX:" + str(i))

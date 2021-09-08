@@ -3,13 +3,17 @@ from atomic_queries import _query_advanced_ticket, _login
 import logging
 import random
 import time
+from configparser import ConfigParser
+
+cp = ConfigParser()
+cp.read("config.ini")
+base_address = cp.get("server", "base_address")
 
 logger = logging.getLogger("query_advanced_ticket")
 # The UUID of user fdse_microservice is that
 uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 date = time.strftime("%Y-%m-%d", time.localtime())
 
-base_address = "http://10.176.122.1:31777"
 
 
 
@@ -28,8 +32,11 @@ if __name__ == '__main__':
                    ("Su Zhou", "Shang Hai"),
                    ("Nan Jing", "Shang Hai")]
     type = "quickest"
-    for i in range(500):
-        place_pair = random.choice(place_pairs)
+    for i in range(50):    
+    # for i in range(1):
+
+        # place_pair = random.choice(place_pairs)
+        place_pair = ("Shang Hai", "Su Zhou")
         print(f"search {type} between {place_pair[0]} to {place_pair[1]}")
         try:
             trip_ids = _query_advanced_ticket(place_pair=place_pair, headers=headers, time=date, type=type)

@@ -239,7 +239,7 @@ def _update_route(headers={}):
 
     url = f"{base_address}/api/v1/adminrouteservice/adminroute"
     payload = {
-        "distanceList": "0,100",
+        "distanceList": "0,120",
         "endStation": "nanjing",
         "startStation": "suzhou",
         "stationList": "suzhou,nanjing",
@@ -692,7 +692,7 @@ def _get(headers={}):
     _get_travels(headers=headers)
     _get_users(headers=headers)
     _get_contacts(headers=headers)
-    # _get_stations(headers=headers)
+    _get_stations(headers=headers)
     _get_trains(headers=headers)
     _get_prices(headers=headers)
     _get_configs(headers=headers)
@@ -748,7 +748,8 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    query_time = 100
+    query_time = 10
+    # query_time = 1
     add_time = 1
 
     for i in range(add_time):

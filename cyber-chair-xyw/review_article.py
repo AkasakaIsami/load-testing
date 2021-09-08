@@ -157,7 +157,3 @@ if __name__ == '__main__':
                     if article["reviewStatus"] == 'alreadyReviewed':
                         _update_review(username, article["articleId"], 1, "high", "it's ok now.", "beforeRebuttal")
                         _confirm_review(username, article["articleId"], "beforeRebuttal")
-
-
-        
-        

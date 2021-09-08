@@ -39,7 +39,8 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    for i in range(300):
+    for i in range(30):
+    # for i in range(1):
         query_order_and_pay(headers=headers)
         print("*****************************INDEX:" + str(i))
 

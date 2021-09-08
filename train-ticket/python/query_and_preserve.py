@@ -6,6 +6,11 @@ import logging
 import random
 import requests
 import time
+from configparser import ConfigParser
+
+cp = ConfigParser()
+cp.read("config.ini")
+base_address = cp.get("server", "base_address")
 
 logger = logging.getLogger("query_and_preserve")
 # The UUID of user fdse_microservice is that
@@ -13,7 +18,6 @@ uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 date = time.strftime("%Y-%m-%d", time.localtime())
 date_next_year= (datetime.datetime.now() + datetime.timedelta(days=365)).strftime("%Y-%m-%d")
 
-base_address = "http://10.176.122.1:31777"
 
 
 def query_and_preserve(headers):
@@ -117,7 +121,8 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    for i in range(500):
+    for i in range(50):
+    # for i in range(1):
         try:
             query_and_preserve(headers=headers)
             print("*****************************INDEX:" + str(i))
