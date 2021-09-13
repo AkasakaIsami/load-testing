@@ -32,8 +32,8 @@ if __name__ == '__main__':
                    ("Su Zhou", "Shang Hai"),
                    ("Nan Jing", "Shang Hai")]
     type = "quickest"
-    for i in range(50):    
-    # for i in range(1):
+    # for i in range(50):    
+    for i in range(1):
 
         # place_pair = random.choice(place_pairs)
         place_pair = ("Shang Hai", "Su Zhou")

@@ -31,6 +31,6 @@ if __name__ == '__main__':
         "Content-Type": "application/json"
     }
     headers["Authorization"] = "Bearer " + token
-    for i in range(10):
-    # for i in range(1):
+    # for i in range(10):
+    for i in range(1):
         query_and_collect_ticket(headers=headers)
