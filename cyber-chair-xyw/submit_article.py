@@ -121,7 +121,7 @@ if __name__ == '__main__':
     logging.info(f"choose meeting {meeting_name}")
 
     # submit articles
-    for i in range(10):
+    for i in range(2):
         _submit_an_article(user, token, meeting_info)
 
     chair_name = meeting_info["chairName"]

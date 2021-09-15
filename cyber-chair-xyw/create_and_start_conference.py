@@ -219,6 +219,9 @@ if __name__ == '__main__':
     # accept the invitations
     for pc_member in pcmembers:
         pc_name = pc_member["username"]
+        # we use test2 and test3 as author
+        if pc_name == "test2" or pc_name == "test3":
+            continue
         _invite_pcmember("wuxiya", chair_token, meeting_name, pc_name)
         pc_token = _login(pc_name, "123456")
         _accept_invitation(pc_name, pc_token, meeting_name, topics)
