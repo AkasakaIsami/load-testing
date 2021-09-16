@@ -7,7 +7,7 @@ from configparser import ConfigParser
 from requests.models import Response
 from utils import random_str
 from login import _login
-from create_and_start_conference import _begin_reivew
+from create_and_start_conference import _begin_review
 
 cp = ConfigParser()
 cp.read("config.ini")
@@ -104,7 +104,7 @@ def _get_meeting_info(meeting_name, headers = {}):
 
 
 if __name__ == '__main__':
-    usernames = ["test2", "test3"]
+    usernames = ["akasaka"]
     username = random.choice(usernames)
     token = _login(username)
     user = _get_user_by_username(username, token)
@@ -127,4 +127,4 @@ if __name__ == '__main__':
     chair_name = meeting_info["chairName"]
     chair_token = _login(chair_name)
     # begin the review
-    _begin_reivew(chair_name, chair_token, meeting_name)
+    _begin_review(chair_name, chair_token, meeting_name)

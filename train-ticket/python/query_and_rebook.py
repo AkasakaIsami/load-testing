@@ -42,8 +42,8 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    # for i in range(10):
-    for i in range(1):
+    for i in range(10):
+    # for i in range(1):
         query_and_rebook(headers=headers)
 
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())

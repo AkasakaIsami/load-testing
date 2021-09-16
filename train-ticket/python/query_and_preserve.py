@@ -121,8 +121,8 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    # for i in range(50):
-    for i in range(1):
+    for i in range(50):
+    # for i in range(1):
         try:
             query_and_preserve(headers=headers)
             print("*****************************INDEX:" + str(i))

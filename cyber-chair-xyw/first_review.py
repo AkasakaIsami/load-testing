@@ -124,7 +124,7 @@ def _publish_meeting(meeting_name):
 
 if __name__ == '__main__':
     # review all articles
-    users = _get_all_users()
+    users = _get_all_users(without_chair = True, without_author = True)
     for user in users:
         username = user["username"]
         meetings = _get_pcmember_meetings(username)
@@ -136,7 +136,7 @@ if __name__ == '__main__':
                     _review_article(username, article["articleId"], -1, "high", "it's not good. I'd like to give a weak reject.")
     
     # chair end review and begin discussion
-    chair_name = "wuxiya"
+    chair_name = "test"
     chair_meetings = _get_chair_meetings(chair_name)
     for chair_meeting in chair_meetings:
         meeting_name = chair_meeting["meetingName"]

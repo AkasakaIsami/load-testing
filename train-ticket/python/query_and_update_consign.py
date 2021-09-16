@@ -78,7 +78,7 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    # for i in range(10):
-    for i in range(1):
+    for i in range(10):
+    # for i in range(1):
         query_and_update_consign(headers=headers)
         print("*****************************INDEX:" + str(i))

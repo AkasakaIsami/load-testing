@@ -748,8 +748,8 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    # query_time = 10
-    query_time = 1
+    query_time = 10
+    # query_time = 1
     add_time = 1
 
     for i in range(add_time):
