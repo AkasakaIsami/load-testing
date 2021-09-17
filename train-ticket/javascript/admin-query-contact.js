@@ -10,11 +10,19 @@ import {
 } from 'k6';
 
 export let options = {
-    vus: 1,
-    iterations: 100,
-    minIterationDuration: '1s',
-};
-
+    scenarios: {
+      contacts: {
+        executor: 'ramping-arrival-rate',
+        startRate: 0,
+        timeUnit: '1s',
+        preAllocatedVUs: 50,
+        maxVUs: 100,
+        stages: [
+          { target: 10, duration: '20s' },
+        ],
+      },
+    },
+  };
 
 export function setup() {
     var url = base_addr + '/api/v1/users/login';
