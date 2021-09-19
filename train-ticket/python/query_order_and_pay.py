@@ -1,9 +1,9 @@
-import logging
-import requests
-
 from atomic_queries import _login, _query_orders, _pay_one_order
 from utils import random_form_list
+from configparser import ConfigParser
 
+cp = ConfigParser()
+cp.read("config.ini")
 
 def query_order_and_pay(headers):
     """
@@ -39,8 +39,9 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    for i in range(30):
-    # for i in range(1):
+    query_time = int(cp.get("server", "query_order_and_pay_time"))
+
+    for i in range(query_time):
         query_order_and_pay(headers=headers)
         print("*****************************INDEX:" + str(i))
 

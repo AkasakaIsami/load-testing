@@ -748,7 +748,8 @@ if __name__ == '__main__':
     }
     headers["Authorization"] = "Bearer " + token
 
-    query_time = 10
+    query_time = int(cp.get("server", "admin_operations_time"))
+    print(query_time)
     # query_time = 1
     add_time = 1
 

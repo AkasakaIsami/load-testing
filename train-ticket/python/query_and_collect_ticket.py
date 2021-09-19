@@ -1,5 +1,9 @@
 from atomic_queries import _login, _query_orders, _collect_one_order
 from utils import random_form_list
+from configparser import ConfigParser
+
+cp = ConfigParser()
+cp.read("config.ini")
 
 
 def query_and_collect_ticket(headers):
@@ -31,6 +35,8 @@ if __name__ == '__main__':
         "Content-Type": "application/json"
     }
     headers["Authorization"] = "Bearer " + token
-    for i in range(10):
-    # for i in range(1):
+
+    query_time = int(cp.get("server", "query_and_collect_ticket_time"))
+
+    for i in range(query_time):
         query_and_collect_ticket(headers=headers)

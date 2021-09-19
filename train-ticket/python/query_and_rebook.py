@@ -42,8 +42,9 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    for i in range(10):
-    # for i in range(1):
+    query_time = int(cp.get("server", "query_and_rebook_time"))
+    
+    for i in range(query_time):
         query_and_rebook(headers=headers)
 
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())

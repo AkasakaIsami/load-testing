@@ -32,9 +32,10 @@ if __name__ == '__main__':
                    ("Su Zhou", "Shang Hai"),
                    ("Nan Jing", "Shang Hai")]
     type = "quickest"
-    for i in range(50):    
-    # for i in range(1):
 
+    query_time = int(cp.get("server", "query_advanced_ticket_time"))
+
+    for i in range(query_time):    
         # place_pair = random.choice(place_pairs)
         place_pair = ("Shang Hai", "Su Zhou")
         print(f"search {type} between {place_pair[0]} to {place_pair[1]}")

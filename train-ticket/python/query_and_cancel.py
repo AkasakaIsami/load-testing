@@ -1,6 +1,9 @@
 from atomic_queries import _login, _query_orders, _cancel_one_order
 from utils import random_form_list
+from configparser import ConfigParser
 
+cp = ConfigParser()
+cp.read("config.ini")
 
 def query_one_and_cancel(headers, uuid="4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"):
     """
@@ -38,8 +41,8 @@ if __name__ == '__main__':
     headers["Authorization"] = "Bearer " + token
 
     uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
-    
-    for i in range(10):
-    # for i in range(1):
+    query_time = int(cp.get("server", "query_and_cancel_time"))
+
+    for i in range(query_time):
         query_one_and_cancel(headers=headers,
                          uuid=uuid,)
