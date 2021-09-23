@@ -71,6 +71,7 @@ export default function (data) {
     });
 
     if (res.status == 200) {
+        console.log(res);
         var len = json2obj(res.body).data.length;
         console.log("Get contacts success, totally " + len + " contacts.");
     } else
