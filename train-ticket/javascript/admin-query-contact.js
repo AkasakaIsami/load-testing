@@ -11,18 +11,19 @@ import {
 
 export let options = {
     scenarios: {
-      contacts: {
-        executor: 'ramping-arrival-rate',
-        startRate: 0,
-        timeUnit: '1s',
-        preAllocatedVUs: 50,
-        maxVUs: 100,
-        stages: [
-          { target: 20, duration: '10s' },
-        ],
-      },
+        contacts: {
+            executor: 'ramping-arrival-rate',
+            startRate: 0,
+            timeUnit: '1s',
+            preAllocatedVUs: 50,
+            maxVUs: 100,
+            stages: [{
+                target: 30,
+                duration: '10s'
+            }, ],
+        },
     },
-  };
+};
 
 export function setup() {
     var url = base_addr + '/api/v1/users/login';
@@ -71,9 +72,12 @@ export default function (data) {
     });
 
     if (res.status == 200) {
-        console.log(res);
-        var len = json2obj(res.body).data.length;
-        console.log("Get contacts success, totally " + len + " contacts.");
+        if (res.body == "busy")
+            console.log("Service busy, plz try latter");
+        else {
+            var len = json2obj(res.body).data.length;
+            console.log("Get contacts success, totally " + len + " contacts.");
+        }
     } else
         console.log("Query fail.");
 }
