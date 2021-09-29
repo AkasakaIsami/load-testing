@@ -113,29 +113,35 @@ def _ratify(username, token, meeting_name, headers: dict = {}):
         logging.error(f"Conference {meeting_name} ratify failed with status_code: {r.status_code}, {r.text}")
 
 
-def _get_all_users(username, token, without_chair = False):
-    headers = {
-        "Authorization": "Bearer " + token
-    }
+
+def _get_all_users(chair_name, token, without_chair = False, without_author = False, headers: dict = {}):
+    headers["Authorization"] = "Bearer " + token
+
     url = f"{base_address}:{user_auth_port}/util/users?fullname="
     r = requests.get(url=url, headers=headers)
 
     if r.status_code == 200:
+        logging.info("Get all users success")
         users: list = r.json().get("responseBody").get("users")
-        logging.info(f"Get all users success. Get {len(users)} users.")
+
         # delete admin
         for user in users:
             if user["username"] == "admin":
                 users.remove(user)
-            if without_chair and user["username"] == "test123":
+                break
+        for user in users:
+            if without_chair and user["username"] == "test":
                 users.remove(user)
-
+                break
+        for user in users:
+            if without_author and user["username"] == "akasaka":
+                users.remove(user)
+                break
         return users
     else:
         logging.error(f"Get all users failed, {r.status_code}, {r.text}")
 
     return None
-
 
 def _invite_pcmember(chair_name, token, meeting_name, pc_name, headers: dict = {}):
     logging.info(f"{chair_name} start to invite {pc_name} for meeting {meeting_name}")
@@ -185,7 +191,7 @@ def _begin_submission(chair_name, token, meeting_name, headers: dict = {}):
     else:
         logging.error(f"conference {meeting_name} begin submission failed, {r}")
 
-def _begin_reivew(chair_name, token, meeting_name, headers: dict = {}, assignStrategy="TopicRelevant"):
+def _begin_review(chair_name, token, meeting_name, headers: dict = {}, assignStrategy="TopicRelevant"):
     logging.info(f"{chair_name} begin the review of meeting {meeting_name}")
 
     url = f"{base_address}:{pcmember_port}/meeting/beginReview"
@@ -203,11 +209,11 @@ def _begin_reivew(chair_name, token, meeting_name, headers: dict = {}, assignStr
 
 if __name__ == '__main__':
     # admin login
-    admin_token = _login("admin", "Erangel")
-    chair_token = _login("test123")
+    admin_token = _login("admin", "123456")
+    chair_token = _login("test")
 
     # apply a meeting
-    meeting = _create_conference("test123", chair_token)
+    meeting = _create_conference("test", chair_token)
     meeting_name = meeting.get("meeting_name")
     
     topics = meeting.get("topics")
@@ -216,7 +222,7 @@ if __name__ == '__main__':
     _ratify("admin", admin_token, meeting_name)
 
     # invite three pc members
-    users = _get_all_users("admin", admin_token, without_chair=True)
+    users = _get_all_users("admin", admin_token, without_chair=True, without_author = True)
     # logging.info(users)
 
     pcmembers = random_form_list(users, 3)
@@ -224,11 +230,9 @@ if __name__ == '__main__':
     # accept the invitations
     for pc_member in pcmembers:
         pc_name = pc_member["username"]
-        _invite_pcmember("test123", chair_token, meeting_name, pc_name)
-        pc_token = _login(pc_name, "a123456")
+        _invite_pcmember("test", chair_token, meeting_name, pc_name)
+        pc_token = _login(pc_name, "123456")
         _accept_invitation(pc_name, pc_token, meeting_name, topics)
 
     # begin submission
-    _begin_submission("test123", chair_token, meeting_name)
-
-    # _begin_reivew("wuxiya", chair_token, meeting_name)
+    _begin_submission("test", chair_token, meeting_name)

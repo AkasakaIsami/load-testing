@@ -23,7 +23,7 @@ notice_port = cp.get("server", "notice_port")
 date = time.strftime("%Y-%m-%d", time.localtime())
 
 
-def _login(username="test123", password="12345qwert"):
+def _login(username="test", password="123456"):
     url = f"{base_address}:{user_auth_port}/login"
     headers = {
     }
@@ -46,4 +46,4 @@ def _login(username="test123", password="12345qwert"):
 
 if __name__ == '__main__':
     print(base_address)
-    _login("admin", "Erangel")
+    _login("admin", "123456")

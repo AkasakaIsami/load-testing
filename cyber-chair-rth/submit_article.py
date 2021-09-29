@@ -8,7 +8,7 @@ from requests.api import head
 from requests.models import Response
 from utils import random_str, random_form_list
 from login import _login
-from create_and_start_conference import _begin_reivew
+from create_and_start_conference import _begin_review
 
 cp = ConfigParser()
 cp.read("config.ini")
@@ -112,31 +112,32 @@ def _get_meeting_info(meeting_name, token, headers = {}):
 
 
 if __name__ == '__main__':
-    usernames = ["test222", "test333"]
-    username = random.choice(usernames)
-    token = _login(username, "a123456")
+    # usernames = ["test222", "test333"]
+    # username = random.choice(usernames)
+    username = "akasaka"
+    token = _login(username, "123456")
 
     user = _get_user_by_username(username, token)
 
 
     # random choose a meeting to submit articles
-    # meetings = _get_available_meetings(username, token)
-    # meeting = random.choice(meetings)
-    # meeting_name = meeting['meetingName']
+    meetings = _get_available_meetings(username, token)
+    meeting = random.choice(meetings)
+    meeting_name = meeting['meetingName']
 
-    meeting_name = "CvjNui" # or just specify a meeting name here.
+    # meeting_name = "CvjNui" # or just specify a meeting name here.
 
     meeting_info = _get_meeting_info(meeting_name, token)
     # logging.info(f"choose meeting {meeting_name}")
 
     # submit articles
-    for i in range(6):
+    for i in range(1):
         _submit_an_article(user, token, meeting_info)
 
     chair_name = meeting_info["chairName"]
     chair_token = _login(chair_name)
     # begin the review
-    _begin_reivew(chair_name, chair_token, meeting_name)
+    _begin_review(chair_name, chair_token, meeting_name)
     
 
 

@@ -131,7 +131,7 @@ def _publish_meeting(meeting_name, token, headers = {}):
 
 if __name__ == '__main__':
     # admin login
-    admin_token = _login("admin", "Erangel")
+    admin_token = _login("admin", "123456")
 
     # review all articles
     users = _get_all_users("admin", admin_token)
@@ -146,7 +146,7 @@ if __name__ == '__main__':
                     _review_article(username, admin_token, article["articleId"], -1, "high", "it's not good. I'd like to give a weak reject.")
     
     # chair end review and begin discussion
-    chair_name = "test123"
+    chair_name = "test"
     chair_meetings = _get_chair_meetings(chair_name, admin_token)
     for chair_meeting in chair_meetings:
         meeting_name = chair_meeting["meetingName"]
@@ -165,9 +165,5 @@ if __name__ == '__main__':
                 review_articles = _get_review_articles(username, admin_token, meeting_name)
                 for article in review_articles:
                     if article["reviewStatus"] == 'alreadyReviewed':
-                        _update_review(username, admin_token, article["articleId"], 1, "high", "it's ok now.", "beforeRebuttal")
+                        _update_review(username, admin_token, article["articleId"], -1, "high", "it's still not ok.", "beforeRebuttal")
                         _confirm_review(username, admin_token, article["articleId"], "beforeRebuttal")
-
-
-        
-        
